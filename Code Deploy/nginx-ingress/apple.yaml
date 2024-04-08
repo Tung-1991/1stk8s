@@ -1,0 +1,32 @@
+kind: ReplicaSet
+apiVersion: apps/v1 # Use 'apps' for ReplicaSets 
+metadata:
+  name: apple-app-replicaset
+  labels:
+    app: apple
+spec:
+  replicas: 1 # Number of desired Pods
+  selector:
+    matchLabels:
+      app: apple
+  template: # Pod template (your original Pod spec goes here) 
+    metadata:
+      labels:
+        app: apple
+    spec:
+      containers:
+      - name: apple-app
+        image: hashicorp/http-echo
+        args:
+          - "-text=THIS_IS_APPLE"
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: apple-service
+spec:
+  selector:
+    app: apple
+  ports:
+    - port: 5678 # Default port for image

@@ -1,0 +1,3 @@
+
+kubectl patch pvc longhorn-pvc-delete -p '{"metadata":{"finalizers":null}}'
+kubectl patch pvc longhorn-pvc-retain -p '{"metadata":{"finalizers":null}}'

@@ -1,0 +1,5 @@
+kubectl delete pods --field-selector status.phase=Failed --all-namespaces
+kubectl delete pods --field-selector status.phase=Succeeded --all-namespaces
+
+
+

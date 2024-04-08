@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-retain-wordpress
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany # Adjust access modes as needed (e.g., ReadWriteOnce)
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nttung-nfs-retain
+  mountOptions:
+    # Add mount options for your NFS configuration if needed
+  nfs:
+    path: /data2/retain
+    server: 192.168.41.22

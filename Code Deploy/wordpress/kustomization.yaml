@@ -1,0 +1,14 @@
+resources:
+  - mysql-pv-pvc.yaml
+  - mysql2-pv-pvc.yaml
+  - mysql-secret.yaml
+  - my-sql-service.yaml
+  - mysql-statefulset.yaml
+  - mysql2-statefulset.yaml
+  - wordpress-deployment.yaml
+  - wordpress-pv-pvc.yaml
+  - wordpress-service.yaml
+  - mysql-cm.yaml
+  - mysql2-cm.yaml
+  - app.ingress-wordpress.yaml
+  - pv-retain-wordpress.yaml

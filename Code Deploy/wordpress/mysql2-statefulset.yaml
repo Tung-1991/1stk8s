@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql2
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  serviceName: mysql2
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: database2
+        image: mysql
+        envFrom:
+         - secretRef:
+              name: mysql-secret
+        env:
+        - name: MYSQL_DATABASE
+          value: wordpress
+        - name: MYSQL_USER
+          value: wordpress
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_ROOT_PASSWORD
+        ports:
+        - containerPort: 3306
+        securityContext:  # Added section
+          privileged: true
+        volumeMounts:
+        - name: mysql2-data
+          mountPath: /var/lib/mysql
+        - name: mysql2-config-data
+          mountPath: /etc/my.cnf
+          subPath: my.cnf
+      volumes:
+      - name: mysql2-data
+        persistentVolumeClaim:
+          claimName: mysql2-pvc
+      - name: mysql2-config-data
+        configMap:
+          name: mysql2-config
+          items:
+          - key: my.cnf
+            path: my.cnf

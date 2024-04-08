@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: pod-longhorn-retain-replicaset
+spec:
+  replicas: 1 # Desired number of pods
+  selector:
+    matchLabels:
+      app: pod-longhorn-retain # Matches the Pod's label
+  template: # Pod template (identical to your provided spec)
+    metadata:
+      labels:
+        app: pod-longhorn-retain
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: www
+        persistentVolumeClaim:
+          claimName: longhorn-pvc-retain
