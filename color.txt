@@ -1,0 +1,26 @@
+echo "export PS1=\"\[\e[92m\]\u@\h:\w\\$\[\e[m\]\"" >> ~/.bashrc && source ~/.bashrc
+sudo passwd root
+sudo apt update -y && sudo apt upgrade -y && ip a | grep inet6 && sudo sysctl -p
+
+
+#CNI-cicd
+inventory/nttung-cluster/group_vars/k8s_cluster/k8s-cluster.yml
+
+#deploy C1-cicd
+docker run --rm -it --mount type=bind,source=/home/vagrant/kubernetes_installation/kubespray/inventory/nttung-cluster,dst=/inventory \
+  --mount type=bind,source=/home/vagrant/.ssh/id_rsa,dst=/root/.ssh/id_rsa \
+  --mount type=bind,source=/home/vagrant/.ssh/id_rsa,dst=/home/vagrant/.ssh/id_rsa \
+  quay.io/kubespray/kubespray:v2.24.1 bash
+
+ansible-playbook -i /inventory/hosts.yaml -e kube_version=v1.28.6 cluster.yml --user=vagrant --ask-pass --become --ask-become-pass
+
+#ansible
+ansible-playbook -i hosts.yaml cluster.yml -e kube_version=v1.28.6 --user=vagrant --ask-pass --become --ask-become-pass
+ansible-playbook cluster.yml -i hosts.yaml -e kube_version=v1.29.2 -e upgrade_cluster_setup=true
+ansible-playbook upgrade-cluster.yml -b -i hosts.yaml -e kube_version=v1.29.2
+
+
+#control
+mkdir -p $HOME/.kube
+sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config

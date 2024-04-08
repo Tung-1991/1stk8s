@@ -1,0 +1,37 @@
+# file hosts.yaml nttung-cluster
+[all]
+control1  ansible_host=192.168.41.23      ip=192.168.41.23
+control2  ansible_host=192.168.41.24      ip=192.168.41.24
+control3  ansible_host=192.168.41.25      ip=192.168.41.25
+worker1  ansible_host=192.168.41.26      ip=192.168.41.26
+worker2  ansible_host=192.168.41.27      ip=192.168.41.27
+worker3  ansible_host=192.168.41.28      ip=192.168.41.28
+
+[kube-master]
+control1
+control2
+control3
+
+[kube-node]
+worker1
+worker2
+worker3
+
+[etcd]
+control1
+control2
+control3
+
+[k8s-cluster:children]
+kube-node
+kube-master
+
+[calico-rr]
+
+[vault]
+control1
+control2
+control3
+worker1
+worker2
+worker3
